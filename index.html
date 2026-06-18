@@ -7,23 +7,24 @@
 
 <head>
     <!-- 字符编码设置为UTF-8，支持中文等多语言字符 -->
+    <!-- 字符编码设置为UTF-8，支持中文等多语言字符 -->
     <meta charset="UTF-8">
-    
+
     <!-- 视口设置：确保在移动设备上正确缩放和显示 -->
     <!-- width=device-width: 宽度等于设备屏幕宽度 -->
     <!-- initial-scale=1.0: 初始缩放比例为1:1 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- 页面标题，显示在浏览器标签页上 -->
     <title>光影回廊 - 我的私人影评博客</title>
-    
+
     <!-- 引入外部CSS样式表，包含全局样式 -->
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- 内联样式：仅用于当前页面的特殊样式 -->
     <style>
         /* ==================== 首页独有样式 ==================== */
-        
+
         /* 
          * .hero - 英雄区域（页面顶部的大横幅）
          * 功能：展示网站主题和标语，吸引用户注意力
@@ -34,13 +35,19 @@
          *   - background: 使用渐变遮罩层+背景图片的组合
          */
         .hero {
-            height: 60vh; /* 占据视口60%的高度 */
-            display: flex; /* 启用Flexbox弹性布局 */
-            flex-direction: column; /* 子元素垂直排列 */
-            justify-content: center; /* 主轴（垂直方向）居中 */
-            align-items: center; /* 交叉轴（水平方向）居中 */
-            text-align: center; /* 文字居中对齐 */
-            
+            height: 60vh;
+            /* 占据视口60%的高度 */
+            display: flex;
+            /* 启用Flexbox弹性布局 */
+            flex-direction: column;
+            /* 子元素垂直排列 */
+            justify-content: center;
+            /* 主轴（垂直方向）居中 */
+            align-items: center;
+            /* 交叉轴（水平方向）居中 */
+            text-align: center;
+            /* 文字居中对齐 */
+
             /* 
              * 背景设置：线性渐变遮罩 + 背景图片
              * linear-gradient(rgba(10, 10, 12, 0.7), rgba(10, 10, 12, 0.7)): 
@@ -49,10 +56,14 @@
              * 两个背景用逗号分隔，前者覆盖后者
              */
             background: linear-gradient(rgba(10, 10, 12, 0.7), rgba(10, 10, 12, 0.7)), url('img/11.jpg');
-            background-size: cover; /* 图片完全覆盖容器，保持比例裁剪 */
-            background-position: center; /* 图片居中对齐 */
-            background-repeat: no-repeat; /* 不重复平铺 */
-            margin-bottom: 40px; /* 底部外边距，与下方内容分隔 */
+            background-size: cover;
+            /* 图片完全覆盖容器，保持比例裁剪 */
+            background-position: center;
+            /* 图片居中对齐 */
+            background-repeat: no-repeat;
+            /* 不重复平铺 */
+            margin-bottom: 40px;
+            /* 底部外边距，与下方内容分隔 */
         }
 
         /* 
@@ -60,9 +71,12 @@
          * 功能：展示网站的核心标语
          */
         .hero h1 {
-            font-size: 2.5rem; /* 字体大小2.5倍根元素大小（约40px） */
-            margin-bottom: 15px; /* 底部外边距 */
-            letter-spacing: 2px; /* 字母间距，增加视觉呼吸感 */
+            font-size: 2.5rem;
+            /* 字体大小2.5倍根元素大小（约40px） */
+            margin-bottom: 15px;
+            /* 底部外边距 */
+            letter-spacing: 2px;
+            /* 字母间距，增加视觉呼吸感 */
         }
 
         /* 
@@ -70,9 +84,12 @@
          * 功能：展示电影相关的经典语录
          */
         .hero p {
-            color: var(--text-muted); /* 使用CSS变量定义的暗色文字 */
-            font-size: 1.1rem; /* 字体稍大 */
-            font-style: italic; /* 斜体，强调引用性质 */
+            color: var(--text-muted);
+            /* 使用CSS变量定义的暗色文字 */
+            font-size: 1.1rem;
+            /* 字体稍大 */
+            font-style: italic;
+            /* 斜体，强调引用性质 */
         }
 
         /* 
@@ -81,11 +98,16 @@
          * 特色：左侧带有渐变色装饰条
          */
         .section-title {
-            font-size: 1.5rem; /* 标题字号 */
-            margin-bottom: 30px; /* 底部间距 */
-            display: flex; /* 弹性布局 */
-            align-items: center; /* 垂直居中对齐 */
-            gap: 10px; /* 子元素之间的间距 */
+            font-size: 1.5rem;
+            /* 标题字号 */
+            margin-bottom: 30px;
+            /* 底部间距 */
+            display: flex;
+            /* 弹性布局 */
+            align-items: center;
+            /* 垂直居中对齐 */
+            gap: 10px;
+            /* 子元素之间的间距 */
         }
 
         /* 
@@ -97,16 +119,22 @@
          *   - inline-block 使伪元素可以设置宽高
          */
         .section-title::before {
-            content: ''; /* 伪元素必须有content属性 */
-            display: inline-block; /* 行内块级元素 */
-            width: 4px; /* 装饰条宽度 */
-            height: 20px; /* 装饰条高度 */
-            background: var(--accent-gradient); /* 使用渐变色背景 */
-            border-radius: 2px; /* 圆角效果 */
+            content: '';
+            /* 伪元素必须有content属性 */
+            display: inline-block;
+            /* 行内块级元素 */
+            width: 4px;
+            /* 装饰条宽度 */
+            height: 20px;
+            /* 装饰条高度 */
+            background: var(--accent-gradient);
+            /* 使用渐变色背景 */
+            border-radius: 2px;
+            /* 圆角效果 */
         }
 
         /* ==================== 影评网格布局 ==================== */
-        
+
         /* 
          * .review-grid - 影评卡片网格容器
          * 功能：使用CSS Grid实现响应式网格布局
@@ -117,9 +145,12 @@
          *   - gap: 网格项之间的间距
          */
         .review-grid {
-            display: grid; /* 启用Grid网格布局 */
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* 响应式列布局 */
-            gap: 30px; /* 网格项之间的间距 */
+            display: grid;
+            /* 启用Grid网格布局 */
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            /* 响应式列布局 */
+            gap: 30px;
+            /* 网格项之间的间距 */
         }
 
         /* 
@@ -128,11 +159,15 @@
          * 特色：悬停时有上浮动画和边框高亮效果
          */
         .review-card {
-            background-color: var(--card-bg); /* 卡片背景色 */
-            border-radius: 12px; /* 圆角效果 */
-            overflow: hidden; /* 隐藏溢出内容，确保圆角生效 */
-            border: 1px solid rgba(255, 255, 255, 0.03); /* 极淡的边框 */
-            
+            background-color: var(--card-bg);
+            /* 卡片背景色 */
+            border-radius: 12px;
+            /* 圆角效果 */
+            overflow: hidden;
+            /* 隐藏溢出内容，确保圆角生效 */
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            /* 极淡的边框 */
+
             /* 
              * transition: 过渡动画
              * transform 0.3s ease: 变换属性0.3秒缓动动画
@@ -146,8 +181,10 @@
          * 功能：鼠标悬停时的交互反馈
          */
         .review-card:hover {
-            transform: translateY(-5px); /* 向上平移5像素，产生浮起效果 */
-            border-color: rgba(59, 130, 246, 0.3); /* 边框变为蓝色高亮 */
+            transform: translateY(-5px);
+            /* 向上平移5像素，产生浮起效果 */
+            border-color: rgba(59, 130, 246, 0.3);
+            /* 边框变为蓝色高亮 */
         }
 
         /* 
@@ -155,11 +192,16 @@
          * 功能：包裹电影剧照，控制图片尺寸和溢出
          */
         .card-image {
-            width: 100%; /* 占满父容器宽度 */
-            height: 200px; /* 固定高度 */
-            background-color: #2c2c2e; /* 图片加载前的占位背景色 */
-            position: relative; /* 相对定位，为子元素提供定位参考 */
-            overflow: hidden; /* 隐藏溢出，配合图片放大效果 */
+            width: 100%;
+            /* 占满父容器宽度 */
+            height: 200px;
+            /* 固定高度 */
+            background-color: #2c2c2e;
+            /* 图片加载前的占位背景色 */
+            position: relative;
+            /* 相对定位，为子元素提供定位参考 */
+            overflow: hidden;
+            /* 隐藏溢出，配合图片放大效果 */
         }
 
         /* 
@@ -167,10 +209,14 @@
          * 功能：展示电影剧照
          */
         .card-image img {
-            width: 100%; /* 宽度100% */
-            height: 100%; /* 高度100% */
-            object-fit: cover; /* 保持比例填满容器，可能裁剪 */
-            transition: transform 0.5s ease; /* 变换动画0.5秒 */
+            width: 100%;
+            /* 宽度100% */
+            height: 100%;
+            /* 高度100% */
+            object-fit: cover;
+            /* 保持比例填满容器，可能裁剪 */
+            transition: transform 0.5s ease;
+            /* 变换动画0.5秒 */
         }
 
         /* 
@@ -178,7 +224,8 @@
          * 功能：卡片悬停时图片轻微放大，增强交互感
          */
         .review-card:hover .card-image img {
-            transform: scale(1.05); /* 放大到105% */
+            transform: scale(1.05);
+            /* 放大到105% */
         }
 
         /* 
@@ -186,7 +233,8 @@
          * 功能：包含标题、元信息和摘要
          */
         .card-content {
-            padding: 20px; /* 内边距 */
+            padding: 20px;
+            /* 内边距 */
         }
 
         /* 
@@ -194,11 +242,16 @@
          * 功能：展示影评的附加信息
          */
         .card-meta {
-            display: flex; /* 弹性布局 */
-            justify-content: space-between; /* 两端对齐 */
-            color: var(--text-muted); /* 暗色文字 */
-            font-size: 0.85rem; /* 较小字号 */
-            margin-bottom: 10px; /* 底部间距 */
+            display: flex;
+            /* 弹性布局 */
+            justify-content: space-between;
+            /* 两端对齐 */
+            color: var(--text-muted);
+            /* 暗色文字 */
+            font-size: 0.85rem;
+            /* 较小字号 */
+            margin-bottom: 10px;
+            /* 底部间距 */
         }
 
         /* 
@@ -206,9 +259,12 @@
          * 功能：展示影评文章标题
          */
         .card-title {
-            font-size: 1.2rem; /* 标题字号 */
-            margin-bottom: 10px; /* 底部间距 */
-            font-weight: 600; /* 字重600，半粗体 */
+            font-size: 1.2rem;
+            /* 标题字号 */
+            margin-bottom: 10px;
+            /* 底部间距 */
+            font-weight: 600;
+            /* 字重600，半粗体 */
         }
 
         /* 
@@ -222,15 +278,22 @@
          *   - overflow: hidden; 隐藏溢出文本
          */
         .card-excerpt {
-            color: var(--text-muted); /* 暗色文字 */
-            font-size: 0.9rem; /* 正文字号 */
-            
+            color: var(--text-muted);
+            /* 暗色文字 */
+            font-size: 0.9rem;
+            /* 正文字号 */
+
             /* 多行文本省略号实现（兼容新旧浏览器） */
-            display: -webkit-box; /* 旧版WebKit盒模型 */
-            -webkit-line-clamp: 2; /* 限制最多显示2行 */
-            line-clamp: 2; /* 标准属性，限制行数 */
-            -webkit-box-orient: vertical; /* 垂直排列 */
-            overflow: hidden; /* 隐藏溢出内容 */
+            display: -webkit-box;
+            /* 旧版WebKit盒模型 */
+            -webkit-line-clamp: 2;
+            /* 限制最多显示2行 */
+            line-clamp: 2;
+            /* 标准属性，限制行数 */
+            -webkit-box-orient: vertical;
+            /* 垂直排列 */
+            overflow: hidden;
+            /* 隐藏溢出内容 */
         }
     </style>
 </head>
@@ -245,7 +308,7 @@
     <nav>
         <!-- Logo/品牌名称，使用渐变文字效果 -->
         <div class="logo">THE SCREENING ROOM</div>
-        
+
         <!-- 导航菜单列表 -->
         <ul>
             <!-- active类表示当前所在页面 -->
