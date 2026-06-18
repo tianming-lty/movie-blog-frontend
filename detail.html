@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!-- 
+    ============================================================
+    详情页模板 - detail.html
+    ============================================================
+    
+    【重要说明】
+    这是一个"样板房"模板文件，用于展示单篇影评的样式和结构。
+    
+    【当前状态】
+    - 本文件包含《怦然心动》的完整影评作为测试数据
+    - 所有链接都指向此文件，但带有不同的ID参数（?id=1, ?id=2...）
+    
+    【未来规划】
+    - 当后端 Cloudflare Workers 连接后，此页面将变成动态页面
+    - Workers 会根据 URL 参数（?id=X）从 KV 数据库读取对应的影评数据
+    - 然后动态渲染到页面中，实现"千变万化"的效果
+    
+    【开发建议】
+    - 目前只需关注样式调试，确保视觉效果完美
+    - 不需要为每部电影创建单独的文件
+    - 后续通过 JavaScript + API 实现动态内容加载
+    
+    ============================================================
+-->
+<html lang="zh-CN">
+
+<head>
+    <!-- 字符编码：UTF-8 -->
+    <meta charset="UTF-8">
+
+    <!-- 视口设置：移动端适配 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 页面标题 -->
+    <title>斯人若彩虹，遇上方知有 ——《怦然心动》深度解读 - 光影回廊</title>
+
+    <!-- 引入全局样式表 -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- 
+     * TODO: 未来功能 - 动态内容加载
+     * 当连接 Cloudflare Workers 后端后，需要：
+     * 1. 在 main.js 中添加代码读取 URL 参数（?id=X）
+     * 2. 通过 fetch API 调用 Workers 接口获取对应影评数据
+     * 3. 将数据动态渲染到页面中（标题、评分、正文等）
+     * 4. 根据电影类型更换 .movie-hero 的背景图片
+     * 
+     * 示例代码结构：
+     * const urlParams = new URLSearchParams(window.location.search);
+     * const movieId = urlParams.get('id');
+     * fetch(`/api/movies/${movieId}`)
+     *   .then(response => response.json())
+     *   .then(data => renderMovieDetail(data));
+     -->
+    <!-- ==================== 详情页独有样式 ==================== -->
+    <style>
+        /* 
+         * .movie-hero - 电影英雄区域（顶部大图）
+         * 功能：展示电影的大尺寸封面图，营造沉浸式视觉体验
+         * 技术：使用渐变遮罩 + 背景图片的组合
+         */
+        .movie-hero {
+            width: 100%;
+            /* 宽度100% */
+            height: 45vh;
+            /* 高度为视口的45% */
+            position: relative;
+            /* 相对定位 */
+            background-size: cover;
+            /* 图片覆盖容器 */
+            background-position: center;
+            /* 图片居中 */
+
+            /* 
+             * 背景设置：从上到下的渐变遮罩 + 背景图片
+             * linear-gradient(to bottom, rgba(10, 10, 12, 0) 30%, #0a0a0c 100%)
+             *   从透明渐变到深色，实现图片与正文的平滑过渡
+             * url('https://picsum.photos/1200/600?random=50')
+             *   随机图片作为占位图
+             */
+            background-image: linear-gradient(to bottom, rgba(10, 10, 12, 0) 30%, #0a0a0c 100%), url('https://picsum.photos/1200/600?random=50');
+
+            margin-top: 70px;
+            /* 顶部外边距，避开固定导航栏 */
+        }
+
+        /* 
+         * .article-container - 文章容器
+         * 功能：限制文章内容的最大宽度，提升阅读舒适度
+         * 特色：负margin使内容向上移动，部分覆盖hero区域
+         */
+        .article-container {
+            max-width: 800px;
+            /* 最大宽度800px，适合阅读 */
+
+            /* 
+             * margin: -60px auto 40px auto
+             * 上: -60px - 负值使内容向上移动，覆盖hero区域底部
+             * 右/左: auto - 水平居中
+             * 下: 40px - 底部间距
+             */
+            margin: -60px auto 40px auto;
+            padding: 0 20px;
+            /* 左右内边距 */
+            position: relative;
+            /* 相对定位 */
+            z-index: 10;
+            /* 层级高于hero，确保内容可见 */
+        }
+
+        /* 
+         * .article-header - 文章头部
+         * 功能：包含评分徽章、标题和元信息
+         */
+        .article-header {
+            margin-bottom: 30px;
+            /* 底部间距 */
+        }
+
+        /* 
+         * .movie-badge - 评分徽章
+         * 功能：以渐变色背景突出显示电影评分
+         */
+        .movie-badge {
+            background: var(--accent-gradient);
+            /* 渐变背景 */
+            padding: 4px 10px;
+            /* 内边距 */
+            border-radius: 4px;
+            /* 圆角 */
+            font-size: 0.8rem;
+            /* 小字号 */
+            font-weight: 600;
+            /* 半粗体 */
+            display: inline-block;
+            /* 行内块级元素 */
+            margin-bottom: 15px;
+            /* 底部间距 */
+        }
+
+        /* 
+         * .article-title - 文章标题
+         * 功能：展示影评的主标题
+         */
+        .article-title {
+            font-size: 2.3rem;
+            /* 大字号标题 */
+            line-height: 1.3;
+            /* 行高1.3倍 */
+            margin-bottom: 15px;
+            /* 底部间距 */
+        }
+
+        /* 
+         * .article-meta - 文章元信息
+         * 功能：展示发布日期、分类等附加信息
+         */
+        .article-meta {
+            color: var(--text-muted);
+            /* 暗色文字 */
+            font-size: 0.9rem;
+            /* 较小字号 */
+            display: flex;
+            /* 弹性布局 */
+            gap: 20px;
+            /* 子元素间距 */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            /* 底部分隔线 */
+            padding-bottom: 15px;
+            /* 底部内边距 */
+        }
+
+        /* ==================== 影评正文排版 ==================== */
+
+        /* 
+         * .article-content - 文章正文容器
+         * 功能：设置正文的全局排版样式
+         */
+        .article-content {
+            font-size: 1.1rem;
+            /* 正文字号稍大，便于阅读 */
+            line-height: 1.8;
+            /* 行高1.8倍，增加可读性 */
+            color: rgba(255, 255, 255, 0.85);
+            /* 略带透明的白色 */
+            letter-spacing: 0.5px;
+            /* 字母间距 */
+        }
+
+        /* 
+         * .article-content p - 正文段落
+         * 功能：设置段落的间距和首行缩进
+         */
+        .article-content p {
+            margin-bottom: 25px;
+            /* 段落间距 */
+            text-indent: 2em;
+            /* 首行缩进2个字符 */
+        }
+
+        /* 
+         * blockquote - 引用块
+         * 功能：突出显示电影经典台词或重要引用
+         * 特色：左侧蓝色边框 + 半透明背景
+         */
+        blockquote {
+            background: rgba(255, 255, 255, 0.02);
+            /* 极淡的背景 */
+            border-left: 4px solid var(--accent-color);
+            /* 左侧蓝色边框 */
+            padding: 20px;
+            /* 内边距 */
+            margin: 30px 0;
+            /* 上下外边距 */
+            font-style: italic;
+            /* 斜体 */
+            color: var(--text-main);
+            /* 白色文字 */
+            border-radius: 0 8px 8px 0;
+            /* 右侧圆角 */
+            text-indent: 0;
+            /* 取消首行缩进 */
+        }
+
+        /* 
+         * blockquote p - 引用块内的段落
+         * 功能：重置段落样式，避免继承父元素的缩进
+         */
+        blockquote p {
+            margin-bottom: 0;
+            /* 取消底部间距 */
+            text-indent: 0;
+            /* 取消首行缩进 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ==================== 导航栏 ==================== -->
+    <nav>
+        <div class="logo">THE SCREENING ROOM</div>
+        <ul>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="archive.html">光影胶片库</a></li>
+            <li><a href="about.html">放映员</a></li>
+        </ul>
+    </nav>
+
+    <!-- 
+     * <div class="movie-hero"></div> - 电影英雄区域
+     * 功能：展示电影的大尺寸封面图
+     * 注意：这是一个空div，背景图通过CSS设置
+     -->
+    <div class="movie-hero"></div>
+
+    <!-- ==================== 文章内容区 ==================== -->
+    <div class="article-container">
+        <header class="article-header">
+            <span class="movie-badge" id="movie-rating">加载中...</span>
+            <h1 class="article-title" id="movie-title">正在加载影评...</h1>
+            <div class="article-meta">
+                <span id="movie-date">发布日期: --</span>
+                <span id="movie-category">分类: --</span>
+            </div>
+        </header>
+
+        <article class="article-content" id="movie-content">
+            <p>正在从边缘节点安全获取影评内容，请稍候...</p>
+        </article>
+    </div>
+
+    <!-- 引入JavaScript文件 -->
+    <script src="main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+/* 
+ * ============================================================================
+ * 全局样式表 - style.css
+ * ============================================================================
+ * 功能：定义整个网站的全局样式，包括颜色变量、重置样式、导航栏等
+ * 设计理念：深色主题，电影感，毛玻璃效果，渐变色彩
+ * ============================================================================
+ */
+
+/* ==================== CSS自定义属性（变量）==================== */
+/* 
+ * :root - 根选择器，定义的变量可在整个文档中使用
+ * 语法：--variable-name: value;
+ * 使用：var(--variable-name)
+ * 优势：便于统一修改主题色，提高可维护性
+ */
+:root {
+    --bg-color: #0a0a0c;           /* 深邃的电影院背景黑色 */
+    --card-bg: #16161a;            /* 卡片夜间黑色背景 */
+    --text-main: #ffffff;          /* 纯白色主文字 */
+    --text-muted: #8e8e93;         /* 暗灰色次要文字 */
+    --accent-color: #3b82f6;       /* 科技感蓝色强调色 */
+    --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6); /* 蓝紫渐变色 */
+}
+
+/* ==================== 全局重置样式 ==================== */
+/* 
+ * * - 通配符选择器，匹配所有元素
+ * 功能：清除浏览器默认的margin和padding，统一盒模型
+ * box-sizing: border-box; 使元素的宽高包含padding和border，便于布局计算
+ */
+* {
+    margin: 0;                      /* 清除外边距 */
+    padding: 0;                     /* 清除内边距 */
+    box-sizing: border-box;         /* 边框盒模型 */
+}
+
+/* 
+ * body - 页面主体
+ * 功能：设置全局背景色、文字颜色、字体族、行高等基础样式
+ */
+body {
+    background-color: var(--bg-color); /* 使用变量定义的深色背景 */
+    color: var(--text-main);           /* 白色文字 */
+    
+    /* 
+     * 字体族列表（按优先级排列）：
+     * -apple-system: macOS/iOS系统字体
+     * BlinkMacSystemFont: Chrome on Mac字体
+     * "Segoe UI": Windows字体
+     * Roboto: Android字体
+     * Arial, sans-serif: 通用无衬线字体回退
+     */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;                  /* 行高1.6倍，提升可读性 */
+    overflow-x: hidden;                /* 隐藏水平滚动条，防止横向溢出 */
+}
+
+/* 
+ * a - 链接标签
+ * 功能：继承父元素颜色，去除默认下划线
+ */
+a {
+    color: inherit;                    /* 继承父元素的颜色 */
+    text-decoration: none;             /* 去除下划线 */
+}
+
+/* ==================== 导航栏样式 ==================== */
+/* 
+ * nav - 导航栏容器
+ * 功能：固定在页面顶部，使用毛玻璃效果
+ * 特色：backdrop-filter实现模糊背景，营造高级感
+ */
+nav {
+    position: fixed;                   /* 固定定位，不随页面滚动 */
+    top: 0;                            /* 距离顶部0 */
+    left: 0;                           /* 距离左侧0 */
+    width: 100%;                       /* 宽度100% */
+    height: 70px;                      /* 高度70像素 */
+    
+    display: flex;                     /* 弹性布局 */
+    justify-content: space-between;    /* 两端对齐（Logo和菜单分开） */
+    align-items: center;               /* 垂直居中 */
+    padding: 0 5%;                     /* 左右内边距5% */
+    
+    /* 
+     * 毛玻璃效果实现：
+     * background: rgba(22, 22, 26, 0.7) - 半透明深色背景
+     * backdrop-filter: blur(12px) - 背景模糊滤镜（标准属性）
+     * -webkit-backdrop-filter: blur(12px) - WebKit内核浏览器兼容
+     */
+    background: rgba(22, 22, 26, 0.7); /* 半透明背景色 */
+    backdrop-filter: blur(12px);       /* 背景模糊效果（标准属性） */
+    -webkit-backdrop-filter: blur(12px); /* 背景模糊效果（WebKit前缀） */
+    
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* 底部极淡分隔线 */
+    z-index: 1000;                     /* 层级最高，确保覆盖其他内容 */
+}
+
+/* 
+ * nav .logo - 导航栏中的Logo
+ * 功能：显示品牌名称，使用渐变文字效果
+ * 技术：background-clip: text + transparent文字填充 = 渐变文字
+ */
+nav .logo {
+    font-size: 1.3rem;                 /* Logo字号 */
+    font-weight: 700;                  /* 粗体 */
+    background: var(--accent-gradient); /* 渐变背景 */
+    
+    /* 
+     * 渐变文字核心技术：
+     * -webkit-background-clip: text - 将背景裁剪为文字形状（WebKit前缀）
+     * background-clip: text - 将背景裁剪为文字形状（标准属性）
+     * -webkit-text-fill-color: transparent - 文字填充色透明，显示背景
+     * letter-spacing: 1px - 字母间距，增加视觉呼吸感
+     */
+    -webkit-background-clip: text;     /* 背景裁剪为文字（WebKit前缀） */
+    background-clip: text;             /* 背景裁剪为文字（标准属性） */
+    -webkit-text-fill-color: transparent; /* 文字透明，显示渐变背景 */
+    letter-spacing: 1px;               /* 字母间距 */
+}
+
+/* 
+ * nav ul - 导航菜单列表
+ * 功能：横向排列导航链接
+ */
+nav ul {
+    display: flex;                     /* 弹性布局，横向排列 */
+    list-style: none;                  /* 去除列表符号 */
+    gap: 30px;                         /* 列表项之间的间距 */
+}
+
+/* 
+ * nav ul li a - 导航链接
+ * 功能：设置链接样式和过渡动画
+ */
+nav ul li a {
+    font-size: 0.95rem;                /* 链接字号 */
+    color: var(--text-muted);          /* 默认暗色 */
+    transition: color 0.3s ease;       /* 颜色变化0.3秒缓动动画 */
+    font-weight: 500;                  /* 中等字重 */
+}
+
+/* 
+ * nav ul li a:hover / .active - 悬停和激活状态
+ * 功能：鼠标悬停或当前页面时高亮显示
+ * text-shadow: 添加发光效果，增强视觉反馈
+ */
+nav ul li a:hover,
+nav ul li a.active {
+    color: var(--text-main);           /* 变为白色 */
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* 蓝色发光效果 */
+}
+
+/* ==================== 版心容器 ==================== */
+/* 
+ * .container - 主内容容器
+ * 功能：限制内容最大宽度，居中显示，添加上下padding避开导航栏
+ */
+.container {
+    max-width: 1200px;                 /* 最大宽度1200像素 */
+    margin: 0 auto;                    /* 水平居中 */
+    
+    /* 
+     * padding: 100px 20px 40px 20px
+     * 上: 100px - 留出导航栏空间（70px导航+30px缓冲）
+     * 右: 20px - 右侧内边距
+     * 下: 40px - 底部内边距
+     * 左: 20px - 左侧内边距
+     */
+    padding: 100px 20px 40px 20px;
+}

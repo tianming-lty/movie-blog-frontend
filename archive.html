@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<!-- 
+    HTML文档类型声明，使用HTML5标准
+    lang="zh-CN" 设置页面语言为简体中文
+-->
+<html lang="zh-CN">
+
+<head>
+    <!-- 字符编码：UTF-8支持多语言 -->
+    <meta charset="UTF-8">
+    
+    <!-- 视口设置：确保移动端正确显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 页面标题 -->
+    <title>光影胶片库 - 个人影评归档</title>
+    
+    <!-- 引入全局样式表 -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- ==================== 归档页独有样式 ==================== -->
+    <style>
+        /* 
+         * .archive-header - 归档页头部区域
+         * 功能：展示页面标题和描述，居中对齐
+         */
+        .archive-header {
+            text-align: center;          /* 文字居中 */
+            margin-bottom: 40px;         /* 底部间距 */
+        }
+
+        .archive-header h1 {
+            font-size: 2.2rem;           /* 大标题字号 */
+            margin-bottom: 10px;         /* 底部间距 */
+        }
+
+        .archive-header p {
+            color: var(--text-muted);    /* 暗色文字 */
+        }
+
+        /* 
+         * .filter-tags - 分类过滤器容器
+         * 功能：横向排列多个分类标签按钮
+         * 特色：flex-wrap允许按钮在窄屏幕下换行
+         */
+        .filter-tags {
+            display: flex;               /* 弹性布局 */
+            justify-content: center;     /* 水平居中 */
+            gap: 15px;                   /* 按钮间距 */
+            margin-bottom: 40px;         /* 底部间距 */
+            flex-wrap: wrap;             /* 允许换行，适配小屏幕 */
+        }
+
+        /* 
+         * .tag-btn - 标签按钮
+         * 功能：可点击的分类筛选按钮
+         * 特色：圆角胶囊形状，悬停/激活时有高亮效果
+         */
+        .tag-btn {
+            background: var(--card-bg);  /* 卡片背景色 */
+            color: var(--text-muted);    /* 默认暗色文字 */
+            padding: 8px 18px;           /* 内边距 */
+            border-radius: 20px;         /* 圆角20px，形成胶囊形状 */
+            font-size: 0.9rem;           /* 按钮字号 */
+            border: 1px solid rgba(255, 255, 255, 0.05); /* 极淡边框 */
+            cursor: pointer;             /* 鼠标指针变为手型 */
+            transition: all 0.3s ease;   /* 所有属性变化0.3秒动画 */
+        }
+
+        /* 
+         * .tag-btn:hover / .active - 悬停和激活状态
+         * 功能：鼠标悬停或选中时的高亮反馈
+         * 效果：蓝色半透明背景 + 发光阴影
+         */
+        .tag-btn:hover,
+        .tag-btn.active {
+            color: var(--text-main);     /* 白色文字 */
+            background: rgba(59, 130, 246, 0.2); /* 蓝色半透明背景 */
+            border-color: var(--accent-color); /* 蓝色边框 */
+            
+            /* 
+             * box-shadow: 发光效果
+             * 0 0 15px rgba(59, 130, 246, 0.2)
+             * 参数：X偏移 Y偏移 模糊半径 颜色
+             */
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* 
+         * .archive-grid - 归档网格容器
+         * 功能：响应式网格布局展示所有电影卡片
+         * 语法：auto-fill自动填充列数，minmax(260px, 1fr)每列最小260px
+         */
+        .archive-grid {
+            display: grid;               /* Grid网格布局 */
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* 响应式列 */
+            gap: 25px;                   /* 网格间距 */
+        }
+
+        /* 
+         * .archive-card - 单个电影卡片
+         * 功能：展示单部电影的封面和基本信息
+         */
+        .archive-card {
+            background: var(--card-bg);  /* 卡片背景色 */
+            border-radius: 10px;         /* 圆角 */
+            overflow: hidden;            /* 隐藏溢出 */
+            border: 1px solid rgba(255, 255, 255, 0.02); /* 极淡边框 */
+            transition: all 0.3s ease;   /* 过渡动画 */
+        }
+
+        /* 
+         * .archive-card:hover - 卡片悬停效果
+         * 功能：向上浮起 + 紫色边框高亮
+         */
+        .archive-card:hover {
+            transform: translateY(-5px); /* 向上平移5px */
+            border-color: rgba(139, 92, 246, 0.3); /* 紫色边框 */
+        }
+
+        /* 
+         * .archive-poster - 电影海报容器
+         * 功能：固定高度的图片展示区域
+         */
+        .archive-poster {
+            height: 350px;               /* 固定高度350px */
+            background: #222;            /* 占位背景色 */
+            overflow: hidden;            /* 隐藏溢出 */
+        }
+
+        /* 
+         * .archive-poster img - 海报图片
+         * 功能：展示电影封面图
+         */
+        .archive-poster img {
+            width: 100%;                 /* 宽度100% */
+            height: 100%;                /* 高度100% */
+            object-fit: cover;           /* 保持比例覆盖容器 */
+            transition: transform 0.5s ease; /* 变换动画0.5秒 */
+        }
+
+        /* 
+         * .archive-card:hover .archive-poster img - 悬停放大效果
+         * 功能：卡片悬停时图片轻微放大
+         */
+        .archive-card:hover .archive-poster img {
+            transform: scale(1.03);      /* 放大到103% */
+        }
+
+        /* 
+         * .archive-info - 卡片信息区域
+         * 功能：包含标题和元信息的容器
+         */
+        .archive-info {
+            padding: 15px;               /* 内边距 */
+        }
+
+        /* 
+         * .archive-title - 电影标题
+         * 功能：展示电影名称，超出部分省略
+         */
+        .archive-title {
+            font-size: 1.1rem;           /* 标题字号 */
+            margin-bottom: 5px;          /* 底部间距 */
+            
+            /* 单行文本省略号 */
+            white-space: nowrap;         /* 不换行 */
+            overflow: hidden;            /* 隐藏溢出 */
+            text-overflow: ellipsis;     /* 显示省略号 */
+        }
+
+        /* 
+         * .archive-meta - 元信息（日期、评分等）
+         * 功能：两端对齐显示附加信息
+         */
+        .archive-meta {
+            font-size: 0.8rem;           /* 较小字号 */
+            color: var(--text-muted);    /* 暗色文字 */
+            display: flex;               /* 弹性布局 */
+            justify-content: space-between; /* 两端对齐 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ==================== 导航栏 ==================== -->
+    <nav>
+        <div class="logo">THE SCREENING ROOM</div>
+        <ul>
+            <li><a href="index.html">首页</a></li>
+            <!-- active类标记当前页面 -->
+            <li><a href="archive.html" class="active">光影胶片库</a></li>
+            <li><a href="about.html">放映员</a></li>
+        </ul>
+    </nav>
+
+    <!-- ==================== 主内容区 ==================== -->
+    <div class="container">
+        <!-- 
+         * <header class="archive-header"> - 页面头部
+         * 功能：展示归档页的标题和描述
+         -->
+        <header class="archive-header">
+            <h1>胶片陈列室</h1>
+            <p>基于个人审美的光影记录，按情绪与主题分类</p>
+        </header>
+
+        <!-- 
+         * .filter-tags - 分类过滤器
+         * 功能：提供多个分类标签供用户筛选
+         * 交互：由main.js处理点击事件，添加active类
+         -->
+        <div class="filter-tags">
+            <button class="tag-btn active">全部放映</button>
+            <button class="tag-btn">🍿 爆米花爆笑</button>
+            <button class="tag-btn">🧠 烧脑科幻</button>
+            <button class="tag-btn">🌧️ 深夜致郁</button>
+            <button class="tag-btn">❤️ 浪漫治愈</button>
+        </div>
+
+        <!-- 
+         * <main class="archive-grid"> - 归档网格
+         * 功能：以网格形式展示所有电影条目
+         * main是语义化标签，表示页面的主要内容
+         -->
+        <main class="archive-grid">
+            <!-- 第1部：怦然心动 -->
+            <div class="archive-card">
+                <a href="detail.html?id=1">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=1" alt="《怦然心动》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">斯人若彩虹，遇上方知有 ——《怦然心动》</h3>
+                        <div class="archive-meta">
+                            <span>🍿🍿🍿🍿</span>
+                            <span>2026-06-18</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第2部：银翼杀手2049 -->
+            <div class="archive-card">
+                <a href="detail.html?id=2">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=2" alt="《银翼杀手2049》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">在废墟中寻找人性 ——《银翼杀手2049》</h3>
+                        <div class="archive-meta">
+                            <span>🍿</span>
+                            <span>2026-06-15</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第3部：海街日记 -->
+            <div class="archive-card">
+                <a href="detail.html?id=3">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=3" alt="《海街日记》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">梅子酒与老房子的温柔时光 ——《海街日记》</h3>
+                        <div class="archive-meta">
+                            <span>🍿☆</span>
+                            <span>2026-06-12</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第4部：星际穿越 -->
+            <div class="archive-card">
+                <a href="detail.html?id=4">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=4" alt="《星际穿越》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">爱是唯一能穿越时空的力量 ——《星际穿越》</h3>
+                        <div class="archive-meta">
+                            <span>🍿🍿🍿</span>
+                            <span>2026-06-08</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第5部：小森林 -->
+            <div class="archive-card">
+                <a href="detail.html?id=5">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=5" alt="《小森林》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">在四季轮回中找到自己 ——《小森林》</h3>
+                        <div class="archive-meta">
+                            <span>🍿🍿☆</span>
+                            <span>2026-06-05</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第6部：盗梦空间 -->
+            <div class="archive-card">
+                <a href="detail.html?id=6">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=6" alt="《盗梦空间》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">梦境与现实的边界在哪里？——《盗梦空间》</h3>
+                        <div class="archive-meta">
+                            <span>🍿</span>
+                            <span>2026-06-01</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第7部：千与千寻 -->
+            <div class="archive-card">
+                <a href="detail.html?id=7">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=7" alt="《千与千寻》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">不要忘记你的名字 ——《千与千寻》重看感悟</h3>
+                        <div class="archive-meta">
+                            <span>🍿🍿🍿</span>
+                            <span>2026-05-28</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第8部：爱乐之城 -->
+            <div class="archive-card">
+                <a href="detail.html?id=8">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=8" alt="《爱乐之城》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">献给追梦者的情书 ——《爱乐之城》</h3>
+                        <div class="archive-meta">
+                            <span>🍿🍿☆</span>
+                            <span>2026-05-25</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第9部：寄生虫 -->
+            <div class="archive-card">
+                <a href="detail.html?id=9">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=9" alt="《寄生虫》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">阶级鸿沟下的黑色寓言 ——《寄生虫》</h3>
+                        <div class="archive-meta">
+                            <span>🍿🍿</span>
+                            <span>2026-05-20</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 第10部：绿皮书 -->
+            <div class="archive-card">
+                <a href="detail.html?id=10">
+                    <div class="archive-poster">
+                        <img src="https://picsum.photos/600/400?random=10" alt="《绿皮书》海报">
+                    </div>
+                    <div class="archive-info">
+                        <h3 class="archive-title">跨越偏见的友谊之旅 ——《绿皮书》</h3>
+                        <div class="archive-meta">
+                            <span>🍿🍿🍿 pornos</span>
+                            <span>2026-05-15</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </main>
+    </div>
+</body>
